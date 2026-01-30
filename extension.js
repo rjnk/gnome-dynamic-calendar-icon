@@ -25,10 +25,13 @@ const CALENDAR_DESKTOP = 'org.gnome.Calendar.desktop';
 
 function getCurrentIcon() {
     const now = GLib.DateTime.new_now_local();
-    const dayStr = (now.get_minute() % 31).toString().padStart(2, '0');     // Production: now.get_day_of_month();
-    
-    // return the icon name
+    const dayStr = now.get_day_of_month().toString().padStart(2, '0');
     return `calendar-${dayStr}.svg`;
+}
+
+function getSecondsUntilMidnight() {
+    const now = GLib.DateTime.new_now_local();
+    return 86400 - (now.get_hour() * 3600 + now.get_minute() * 60 + now.get_second());
 }
 
 function setIcon(desktopFile, iconPath) {
@@ -81,12 +84,9 @@ export default class CalendarIconExtension extends Extension {
     }
 
     _startTimer() {
-        const now = GLib.DateTime.new_now_local();
-        const secondsUntilNextMinute = 60 - now.get_second();
-
-        this._timerId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, secondsUntilNextMinute, () => {
+        this._timerId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, getSecondsUntilMidnight(), () => {
             this._updateIcon();
-            this._timerId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 60, () => {
+            this._timerId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 86400, () => {
                 this._updateIcon();
                 return GLib.SOURCE_CONTINUE;
             });
