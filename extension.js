@@ -40,10 +40,16 @@ function setIcon(desktopFile, iconPath) {
         GLib.build_filenamev([GLib.get_home_dir(), USER_APPS, desktopFile])
     );
 
-    const [, contents] = systemFile.load_contents(null);
+    let contents;
+    try {
+        [, contents] = systemFile.load_contents(null);
+    } catch (e) {
+        console.error(`Calendar Icon: ${desktopFile} not found, is GNOME Calendar installed?`);
+        return;
+    }
+
     const text = new TextDecoder().decode(contents);
     const modified = text.replace(/^Icon=.*$/m, `Icon=${iconPath}`);
-
     extensionFile.replace_contents(modified, null, false, Gio.FileCreateFlags.NONE, null);
 }
 
@@ -51,7 +57,11 @@ function resetIcon(desktopFile) {
     const extensionFile = Gio.File.new_for_path(
         GLib.build_filenamev([GLib.get_home_dir(), USER_APPS, desktopFile])
     );
-    extensionFile.delete(null);
+    try {
+        extensionFile.delete(null);
+    } catch (e) {
+        // File may not exist if setIcon() failed (e.g., GNOME Calendar not installed)
+    }
 }
 
 export default class CalendarIconExtension extends Extension {

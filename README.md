@@ -26,6 +26,10 @@ Included icon themes are from [Numix Project](https://github.com/numixproject):
 - [numix-icon-theme-circle](https://github.com/numixproject/numix-icon-theme-circle)
 - [numix-icon-theme-square](https://github.com/numixproject/numix-icon-theme-square)
 
+## Known Issues
+
+- The icon updates at midnight based on when the extension was enabled. Timezone or system clock changes won't trigger an update until the next scheduled midnight.
+
 ## License
 
 GPL-2.0-or-later

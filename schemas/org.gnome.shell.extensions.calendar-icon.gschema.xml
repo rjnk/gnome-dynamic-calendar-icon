@@ -2,7 +2,7 @@
 <schemalist>
   <schema id="org.gnome.shell.extensions.calendar-icon" path="/org/gnome/shell/extensions/calendar-icon/">
     <key name="icon-theme" type="s">
-      <default>'numix-circle-black'</default>
+      <default>'Numix Circle Red'</default>
       <summary>Icon theme</summary>
       <description>The icon theme subfolder to use</description>
     </key>
