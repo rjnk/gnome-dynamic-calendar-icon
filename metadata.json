@@ -1,0 +1,8 @@
+{
+  "name": "Dynamic Themed Calendar Icon",
+  "description": "Let the themed calendar icon have the correct day.",
+  "uuid": "calendar-icon@rejnek.cz",
+  "shell-version": [
+    "49"
+  ]
+}
