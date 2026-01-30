@@ -10,9 +10,23 @@ A GNOME Shell extension that replaces the GNOME Calendar icon with a dynamic ver
 
 ## Installation
 
-1. Copy the extension folder to `~/.local/share/gnome-shell/extensions/`
-2. Restart GNOME Shell (log out/in on Wayland)
-3. Enable the extension: `gnome-extensions enable calendar-icon@rejnek.cz`
+```bash
+make install
+```
+
+Then restart GNOME Shell (log out/in on Wayland) and enable:
+
+```bash
+gnome-extensions enable calendar-icon@rejnek.cz
+```
+
+## Building
+
+```bash
+make build   # compile schemas
+make zip     # create zip for extensions.gnome.org
+make clean   # remove compiled files
+```
 
 ## Adding Custom Themes
 
