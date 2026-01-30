@@ -1,6 +1,6 @@
 {
-  "name": "Dynamic Themed Calendar Icon",
-  "description": "Let the themed calendar icon have the correct day.",
+  "name": "Dynamic Calendar Icon",
+  "description": "Replaces the GNOME Calendar icon with a dynamic version that always shows the current day. Supports multiple icon themes.",
   "uuid": "calendar-icon@rejnek.cz",
   "shell-version": ["49"],
   "settings-schema": "org.gnome.shell.extensions.calendar-icon"
