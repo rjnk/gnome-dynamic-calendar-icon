@@ -2,7 +2,8 @@
 
 A GNOME Shell extension that replaces the GNOME Calendar icon with a dynamic version showing the current day of the month (e.g. 30 for the 30th January).
 
-![Calendar Preview](./docs/calendar-preview.png)
+![Calendar Preview Adwaita](./docs/calendar-preview-adwaita.png)
+![Calendar Preview Numix Square](./docs/calendar-preview-numix-square.png)
 
 ## Features
 
