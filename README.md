@@ -2,6 +2,8 @@
 
 A GNOME Shell extension that replaces the GNOME Calendar icon with a dynamic version showing the current day of the month.
 
+![Calendar Preview](./docs/calendar-preview.png)
+
 ## Features
 
 - Displays the current day on the Calendar app icon
