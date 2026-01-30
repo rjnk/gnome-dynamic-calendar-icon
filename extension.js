@@ -23,6 +23,14 @@ const SYSTEM_APPS = '/usr/share/applications';
 const USER_APPS = '.local/share/applications';
 const CALENDAR_DESKTOP = 'org.gnome.Calendar.desktop';
 
+function getCurrentIcon() {
+    const now = GLib.DateTime.new_now_local();
+    const dayStr = (now.get_minute() % 31).toString().padStart(2, '0');     // Production: now.get_day_of_month();
+    
+    // return the icon name
+    return `calendar-${dayStr}.svg`;
+}
+
 function setIcon(desktopFile, iconPath) {
     const systemFile = Gio.File.new_for_path(`${SYSTEM_APPS}/${desktopFile}`);
     const extensionFile = Gio.File.new_for_path(
@@ -45,11 +53,44 @@ function resetIcon(desktopFile) {
 
 export default class CalendarIconExtension extends Extension {
     enable() {
-        const iconPath = GLib.build_filenamev([this.path, 'calendar-red-01.svg']);
-        setIcon(CALENDAR_DESKTOP, iconPath);
+        this._settings = this.getSettings();
+        this._settingsChangedId = this._settings.connect('changed::icon-theme', () => {
+            this._updateIcon();
+        });
+        this._updateIcon();
+        this._startTimer();
     }
 
     disable() {
+        if (this._timerId) {
+            GLib.source_remove(this._timerId);
+            this._timerId = null;
+        }
+        if (this._settingsChangedId) {
+            this._settings.disconnect(this._settingsChangedId);
+            this._settingsChangedId = null;
+        }
+        this._settings = null;
         resetIcon(CALENDAR_DESKTOP);
+    }
+
+    _updateIcon() {
+        const theme = this._settings.get_string('icon-theme');
+        const iconPath = GLib.build_filenamev([this.path, 'icons', theme, getCurrentIcon()]);
+        setIcon(CALENDAR_DESKTOP, iconPath);
+    }
+
+    _startTimer() {
+        const now = GLib.DateTime.new_now_local();
+        const secondsUntilNextMinute = 60 - now.get_second();
+
+        this._timerId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, secondsUntilNextMinute, () => {
+            this._updateIcon();
+            this._timerId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 60, () => {
+                this._updateIcon();
+                return GLib.SOURCE_CONTINUE;
+            });
+            return GLib.SOURCE_REMOVE;
+        });
     }
 }
